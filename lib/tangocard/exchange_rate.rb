@@ -10,7 +10,7 @@ class Tangocard::ExchangeRate
   # Arguments:
   #   none
   def self.timestamp
-    Tangocard::Raas.rewards_index.parsed_response['xrates']['timestamp']
+    Tangocard::Raas.catalogs.response['xrates']['timestamp']
   end
 
   # Return an array of all currency exchange rates.
@@ -23,7 +23,7 @@ class Tangocard::ExchangeRate
   # Arguments:
   #   none
   def self.all
-    Tangocard::Raas.rewards_index.parsed_response['xrates']['rates'].map do |currency_code, rate|
+    Tangocard::Raas.catalogs.response['xrates']['rates'].map do |currency_code, rate|
       Tangocard::ExchangeRate.new(currency_code, rate)
     end
   end

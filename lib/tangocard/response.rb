@@ -1,34 +1,41 @@
-class Tangocard::Response
-  attr_reader :parsed_response, :code
+module Tangocard
+  class Response
 
-  def initialize(raw_response)
-    @parsed_response = raw_response.parsed_response
-    @code = raw_response.code
-  end
+    class UnrecognizedReponseException < StandardError; end
 
-  def success?
-    safe_response['success'] || false
-  end
+    attr_reader :response, :raw_response, :code
 
-  def error_message
-    safe_response['error_message']
-  end
+    def initialize(raw_response)
+      @raw_response = raw_response
+      @response = format_response_keys(@raw_response.parsed_response)
+      @code = raw_response.code
+    end
 
-  def denial_message
-    safe_response['denial_message']
-  end
+    def success?
+      [200, 201].include?(code)
+    end
 
-  def denial_code
-    safe_response['denial_code']
-  end
+    def error_message
+      safe_response['errors'].map { |e| e['message'] }
+    end
 
-  def invalid_inputs
-    safe_response['invalid_inputs']
-  end
+    private
 
-  private
+    def safe_response
+      response || {}
+    end
 
-  def safe_response
-    parsed_response || {}
+    def format_response_keys(response_data)
+      if response_data.is_a?(Hash)
+        response_data.deep_transform_keys do |k|
+          k.gsub(/\s/, '_').underscore
+        end
+      elsif response_data.is_a?(Array)
+        response_data.collect { |item| format_response_keys(item) }
+      else
+        raise UnrecognizedReponseException,
+              "Unrecognized response: #{response_data}"
+      end
+    end
   end
 end
