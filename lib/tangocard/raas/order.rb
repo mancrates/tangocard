@@ -17,7 +17,7 @@ module Tangocard
             query_string = '?'
             params.keys.each_with_index do |k, i|
               query_string += '&' unless i.zero?
-              query_string += "#{k}=#{params[k]}"
+              query_string += "#{k.to_s.camelize(:lower)}=#{params[k]}"
             end
           end
 
@@ -43,7 +43,7 @@ module Tangocard
         #    => #<Tangocard::Response:0x007f9a6c4bca68 ...>
         #
         # Arguments:
-        #   params: 
+        #   params:
         def create(params)
           post_request('/orders', params)
         end

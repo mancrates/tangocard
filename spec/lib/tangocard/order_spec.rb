@@ -38,6 +38,23 @@ describe Tangocard::Order do
       end
     end
 
+    describe 'self.find_by' do
+      let(:order_id) { Object.new }
+      let(:success_response) { sample_find_by_order_response(true) }
+      let(:fail_response) { sample_find_by_order_response(false) }
+
+      it 'should return a Tangocard::Order object if successful' do
+        expect(Tangocard::Raas).to receive(:show_order).with({'order_id' => order_id}) { success_response }
+        expect(Tangocard::Order).to receive(:new).with(success_response.parsed_response['order'], success_response) { true }
+        expect(Tangocard::Order.find_by(order_id)).to be true
+      end
+
+      it 'should throw a Tangocard::OrderNotFoundException if failed' do
+        expect(Tangocard::Raas).to receive(:show_order).with({'order_id' => order_id}) { fail_response }
+        lambda{ Tangocard::Order.find_by(order_id) }.should raise_error(Tangocard::OrderNotFoundException)
+      end
+    end
+
     describe 'self.create' do
       let(:params) { Object.new }
       let(:success_response) { sample_create_order_response(true) }

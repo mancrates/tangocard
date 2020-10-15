@@ -14,6 +14,21 @@ module Tangocard
         Tangocard::Raas::Order.index.map { |r| new(r) }
       end
 
+      # Find a list of Orders given the criteria.
+      #
+      # Example:
+      #   >> Tangocard::Order.find_by(external_ref_id: 1234)
+      #    => #<Tangocard::Order:0x007f9a6fec0138 ... >
+      #
+      # Arguments:
+      #   external_ref_id: (String)
+      #
+      def find_by(params)
+        Tangocard::Raas::Order.index(params).map do |order|
+          new(order)
+        end
+      end
+
       # Find a Order given an order_id.
       #
       # Example:
