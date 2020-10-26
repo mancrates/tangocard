@@ -47,15 +47,17 @@ module Tangocard
       @rewards ||= (attributes[:items] || []).map { |r| Reward.new(r) }
     end
 
+    def variable_rewards
+      rewards.select(&:active?).select(&:variable_value?)
+    end
 
+    def fixed_rewards
+      rewards.select(&:active?).select(&:fixed_value?)
+    end
 
-
-
-
-
-
-
-
+    def redemtion_instructions
+      rewards.select(&:active?).first.redemption_instructions
+    end
 
     # Return the image_url for the brand.  For some brands, there is no image_url. You can set :local_images in your
     # Tangocard initializer to provide a local image for a specified brand.  See the README for details.
@@ -114,6 +116,20 @@ module Tangocard
     #   none
     def variable_price?
       rewards.select(&:variable_price?).any?
+    end
+
+    # True if this is a brand with fixed-price rewards.
+    #
+    # Example:
+    #   >> itunes_brand.fixed_price?
+    #    => false
+    #   >> amazon_brand.fixed_price?
+    #    => true
+    #
+    # Arguments:
+    #   none
+    def fixed_price?
+      rewards.select(&:fixed_price?).any?
     end
   end
 end

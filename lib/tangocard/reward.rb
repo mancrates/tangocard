@@ -17,6 +17,18 @@ module Tangocard
       value_type == 'VARIABLE_VALUE'
     end
 
+    # Is this a fixed-priced reward?
+    #
+    # Example:
+    #   >> reward.fixed_value?
+    #    => true # reward is fixed-priced
+    #
+    # Arguments:
+    #   none
+    def fixed_value?
+      value_type == 'FIXED_VALUE'
+    end
+
     # Is this reward purchasable given a certain number of cents available to purchase it?
     # True if reward is available and user has enough cents
     # False if reward is unavailable OR user doesn't have enough cents

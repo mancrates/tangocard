@@ -57,8 +57,16 @@ module Tangocard
       end
     end
 
-    def claim_code
-      reward[:credentials][:claim_code]
+    def card_number
+      reward[:credentials][:claim_code] || reward[:credentials][:card_number]
+    end
+
+    def pin
+      reward[:credentials][:pin]
+    end
+
+    def redemption_url
+      reward[:credentials][:redemtion_url]
     end
   end
 end
