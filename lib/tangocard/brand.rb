@@ -48,11 +48,11 @@ module Tangocard
     end
 
     # brands only have a single variable reward
-    def variable_reward
+    def variable_value_reward
       rewards.select(&:active?).select(&:variable_value?).first
     end
 
-    def fixed_rewards
+    def fixed_value_rewards
       rewards.select(&:active?).select(&:fixed_value?)
     end
 
