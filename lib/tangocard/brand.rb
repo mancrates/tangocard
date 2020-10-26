@@ -47,15 +47,16 @@ module Tangocard
       @rewards ||= (attributes[:items] || []).map { |r| Reward.new(r) }
     end
 
-    def variable_rewards
-      rewards.select(&:active?).select(&:variable_value?)
+    # brands only have a single variable reward
+    def variable_reward
+      rewards.select(&:active?).select(&:variable_value?).first
     end
 
     def fixed_rewards
       rewards.select(&:active?).select(&:fixed_value?)
     end
 
-    def redemtion_instructions
+    def redemption_instructions
       rewards.select(&:active?).first.redemption_instructions
     end
 
