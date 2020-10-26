@@ -17,7 +17,9 @@ module Tangocard
             query_string = '?'
             params.keys.each_with_index do |k, i|
               query_string += '&' unless i.zero?
-              query_string += "#{k.to_s.camelize(:lower)}=#{params[k]}"
+              key = k.to_s.camelize(:lower)
+              key.sub!(/Id$/,'ID') if key.match(/Id$/)
+              query_string += "#{key}=#{params[k]}"
             end
           end
 

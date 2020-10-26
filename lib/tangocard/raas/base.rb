@@ -39,7 +39,9 @@ module Tangocard
 
         def post_request(path, params)
           post_params = params.deep_transform_keys do |k|
-            k.to_s.camelize(:lower)
+            key = k.to_s.camelize(:lower)
+            key.sub!(/Id$/,'ID') if key.match(/Id$/)
+            key
           end
 
           response = Tangocard::Response.new(

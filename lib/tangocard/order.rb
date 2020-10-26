@@ -24,9 +24,9 @@ module Tangocard
       #   external_ref_id: (String)
       #
       def find_by(params)
-        Tangocard::Raas::Order.index(params).map do |order|
-          new(order)
-        end
+        response = Tangocard::Raas::Order.index(params)
+        order = (response['orders'] || []).first
+        find(order['reference_order_id']) if order['reference_order_id']
       end
 
       # Find a Order given an order_id.
