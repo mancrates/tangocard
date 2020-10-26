@@ -47,13 +47,23 @@ module Tangocard
       @rewards ||= (attributes[:items] || []).map { |r| Reward.new(r) }
     end
 
+    def reward_for_value(value_cents)
+      if brand.variable_value_reward.present?
+        brand.variable_value_reward
+      elsif brand.fixed_value_rewards.any?
+        brand.fixed_value_rewards.find do |fixed_reward|
+          fixed_reward.value_cents == value_cents
+        end
+      end
+    end
+
     # brands only have a single variable reward
     def variable_value_reward
-      rewards.select(&:active?).select(&:variable_value?).first
+      @variable_value_reward ||= rewards.select(&:active?).select(&:variable_value?).first
     end
 
     def fixed_value_rewards
-      rewards.select(&:active?).select(&:fixed_value?)
+      @fixed_value_rewards ||= rewards.select(&:active?).select(&:fixed_value?)
     end
 
     def redemption_instructions
