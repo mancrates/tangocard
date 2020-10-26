@@ -29,6 +29,14 @@ module Tangocard
       value_type == 'FIXED_VALUE'
     end
 
+    def value_cents
+      if variable_price?
+        (min_price * 100).to_i
+      else
+        (face_value * 100).to_i
+      end
+    end
+
     # Is this reward purchasable given a certain number of cents available to purchase it?
     # True if reward is available and user has enough cents
     # False if reward is unavailable OR user doesn't have enough cents
@@ -42,11 +50,7 @@ module Tangocard
     def purchasable?(balance_in_cents)
       return false unless active?
 
-      if variable_price?
-        min_price <= balance_in_cents
-      else
-        denomination <= balance_in_cents
-      end
+      value_cents <= balance_in_cents
     end
 
     # Converts price in cents for given field to Money object using currency_code
