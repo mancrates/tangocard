@@ -48,10 +48,10 @@ module Tangocard
     end
 
     def reward_for_value(value_cents)
-      if brand.variable_value_reward.present?
-        brand.variable_value_reward
-      elsif brand.fixed_value_rewards.any?
-        brand.fixed_value_rewards.find do |fixed_reward|
+      if variable_value_reward.present?
+        variable_value_reward
+      elsif fixed_value_rewards.any?
+        fixed_value_rewards.find do |fixed_reward|
           fixed_reward.value_cents == value_cents
         end
       end
