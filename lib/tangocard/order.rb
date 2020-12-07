@@ -66,7 +66,7 @@ module Tangocard
     end
 
     def redemption_url
-      reward[:credentials][:redemtion_url]
+      reward[:credentials][:redemption_url] || reward[:credentials][:bypass_url]
     end
   end
 end
