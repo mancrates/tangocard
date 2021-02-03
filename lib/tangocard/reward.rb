@@ -30,7 +30,7 @@ module Tangocard
     end
 
     def value_cents
-      if variable_price?
+      if variable_value?
         (min_price * 100).to_i
       else
         (face_value * 100).to_i
