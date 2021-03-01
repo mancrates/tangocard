@@ -26,7 +26,7 @@ module Tangocard
       def find_by(params)
         response = Tangocard::Raas::Order.index(params)
         order = (response['orders'] || []).first
-        find(order['reference_order_id']) if order['reference_order_id']
+        find(order['reference_order_id']) if order && order['reference_order_id']
       end
 
       # Find a Order given an order_id.
